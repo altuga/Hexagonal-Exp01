@@ -93,7 +93,7 @@ This application demonstrates hexagonal architecture (ports and adapters) for a 
 ## Package Structure
 
 ```
-com.example.hex
+jug.istanbul
 ├── Hex01Application.java          (Main & Bean Configuration)
 ├── domain/
 │   ├── Discount.java               (Entity + Business Logic)

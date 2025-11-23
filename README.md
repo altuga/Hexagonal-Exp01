@@ -1,44 +1,59 @@
-# Hex01 — Hexagonal Architecture Example (Java + Spring Boot)
+# Hexagonal Architecture Discount Application
 
-This is a minimal Java example demonstrating Hexagonal Architecture (ports & adapters) inspired by Alistair Cockburn's article.
+A simple Java Spring Boot application demonstrating Hexagonal Architecture (Ports and Adapters) principles.
 
-Project structure (important parts):
-- `com.example.hex.domain` — domain entity and outbound port (`Discount`, `DiscountRepository`).
-- `com.example.hex.application.port.in` — inbound port / use case (`DiscountUseCase`).
-- `com.example.hex.application.service` — application service implementing use cases (`DiscountService`).
-- `com.example.hex.adapter.out.persistence` — outbound adapter (in-memory repo).
-- `com.example.hex.adapter.in.web` — inbound adapter (REST controller).
+## Project Structure
 
-Prerequisites
-- Java 17
-- Maven
+The project follows the hexagonal architecture package structure:
 
-Build
-```bash
-mvn -DskipTests package
+```
+jug.istanbul
+├── domain/                 # Core business logic (The Hexagon)
+│   ├── Discount.java       # Domain Entity & Logic
+│   └── port/               # Outbound Ports
+├── application/            # Application Layer
+│   ├── port/in/            # Inbound Ports (Use Cases)
+│   └── service/            # Application Services
+└── adapter/                # Adapters Layer
+    ├── in/web/             # Inbound Adapters (REST Controller)
+    └── out/persistence/    # Outbound Adapters (Repositories)
 ```
 
-Run
-```bash
-java -jar target/hex01-0.0.1-SNAPSHOT.jar
+## Features
+
+- **Domain-Centric Design**: Business logic is isolated in the domain layer.
+- **Ports & Adapters**: Clear separation between core logic and external concerns.
+- **Rule-Based Discounts**:
+  - Amount >= 100: 5% discount
+  - Amount >= 1000: 10% discount
+  - Amount >= 10000: 20% discount
+
+## API Usage
+
+### Apply Discount
+
+**Endpoint:** `POST /api/discounts/apply`
+
+**Request:**
+```json
+{
+  "amount": 1000.0
+}
 ```
 
-Example API (after app starts on port 8080)
-
-Create a discount:
-```bash
-curl -s -X POST http://localhost:8080/api/discounts -H "Content-Type: application/json" -d '{"name":"Black Friday","percent":20.0}' | jq
+**Response:**
+```
+900.0
 ```
 
-List discounts:
-```bash
-curl -s http://localhost:8080/api/discounts | jq
-```
+## Running the Application
 
-Apply discount to an amount (replace `<id>`):
-```bash
-curl -s -X POST http://localhost:8080/api/discounts/<id>/apply -H "Content-Type: application/json" -d '{"amount":100.0}' | jq
-```
+1. Build the project:
+   ```bash
+   mvn clean package
+   ```
 
-Notes
-- This project is intentionally small to clearly show the hexagonal layering. Swap the `InMemoryTaskRepository` bean with a JPA or other adapter to persist tasks without changing the application service or controller.
+2. Run the application:
+   ```bash
+   java -jar target/hex01-0.0.1-SNAPSHOT.jar
+   ```
