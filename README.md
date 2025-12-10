@@ -47,12 +47,12 @@ jug.istanbul
 ```
 
 **Test with curl :**
-**Test with curl :**
+```
 curl -sS -X POST "http://localhost:8080/api/discounts/apply" \
 -H "Content-Type: application/json" \
 -H "Accept: application/json" \
 --data '{"amount":1000}' | jq .
-
+```
 
 ## Running the Application
 
